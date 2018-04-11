@@ -5,16 +5,15 @@ var fs = require('fs');
 var command = process.argv[2];
 var query = process.argv[3];
 
-console.log(process.env.TWITTER_CONSUMER_KEY);
-
 var getTweets = function () {
-
     var Twitter = require("twitter");
     var client = new Twitter(keys.twitter);
-
-    client.get('favorites/list', function (error, tweets, response) {
+    var params = {
+        screen_name: 'nodejs'
+    };
+    client.get('statuses/user_timeline', params, function (error, tweets, response) {
+        // client.get('favorites/list', function (error, tweets, response) {
         if (error) throw error;
-
         if (tweets.length > 20) {
             for (var i = 0; i < 20; i++) {
                 console.log(i + ' ' + tweets[i].created_at);
@@ -43,17 +42,37 @@ var getSpotify = function (query) {
     }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
-        }
-        data.tracks.items.forEach(function (each) {
-            each.artists.forEach(function (artist) {
+        };
+
+        if (query == 'The Sign') {
+            var song = data.tracks.items.find(function (each) {
+                // console.log(each);
+                var found = each.artists.find(function (artist) {
+                    return artist.name == 'Ace of Base';
+                    // console.log(artist.name);
+
+                });
+                // console.log(found);
+                return found;
+            })
+            song.artists.forEach(function (artist) {
                 console.log("Artist: " + artist.name);
             });
-            console.log("Song name: " + each.name);
-            console.log("Preview Link: " + each.preview_url);
-            console.log("Album: " + each.album.name + '\n\n');
-        })
+            console.log("Song name: " + song.name);
+            console.log("Preview Link: " + song.preview_url);
+            console.log("Album: " + song.album.name + '\n\n');
+            // console.log(song);
+        } else {
+            data.tracks.items.forEach(function (each) {
+                each.artists.forEach(function (artist) {
+                    console.log("Artist: " + artist.name);
+                });
+                console.log("Song name: " + each.name);
+                console.log("Preview Link: " + each.preview_url);
+                console.log("Album: " + each.album.name + '\n\n');
+            });
+        }
     });
-    //   console.log(data.tracks.items); 
 };
 
 var getMovie = function (title) {
@@ -98,7 +117,6 @@ function runProgram(command) {
                 if (err) {
                     return console.log(err);
                 };
-                console.log(data.split(","));
                 var input = data.split(",");
                 query = input[1];
                 runProgram(input[0]);
