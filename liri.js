@@ -106,7 +106,7 @@ function runProgram(command) {
             getTweets();
             break;
         case `spotify-this-song`:
-            getSpotify();
+            getSpotify(query);
             break;
         case `movie-this`:
             getMovie(query);

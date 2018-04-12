@@ -37,4 +37,8 @@ returns:
 
  * `do-what-it-says`
  reads random.txt and selects one of the choices above (default is - spotify-this-song,"I Want it That Way")
+
+ ![Querying for tweets](ScreenShot1.png)
+ ![Querying spotify with default song](ScreenShot2.png)
+ ![Querying spotify with user song](ScreenShot3.png)
  
