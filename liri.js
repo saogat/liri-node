@@ -12,19 +12,18 @@ var getTweets = function () {
         screen_name: 'nodejs'
     };
     client.get('statuses/user_timeline', params, function (error, tweets, response) {
-        // client.get('favorites/list', function (error, tweets, response) {
         if (error) throw error;
         if (tweets.length > 20) {
             for (var i = 0; i < 20; i++) {
-                console.log(i + ' ' + tweets[i].created_at);
-                console.log(tweets[i].text);
-                console.log('\n');
+                log(i + ' ' + tweets[i].created_at);
+                log(tweets[i].text);
+                log('\n');
             }
         } else {
             for (var i = 0; i < tweets.length; i++) {
-                console.log(i + ' ' + tweets[i].created_at);
-                console.log(tweets[i].text);
-                console.log('\n');
+                log(i + ' ' + tweets[i].created_at);
+                log(tweets[i].text);
+                log('\n');
             }
         };
     });
@@ -56,20 +55,20 @@ var getSpotify = function (query) {
                 return found;
             })
             song.artists.forEach(function (artist) {
-                console.log("Artist: " + artist.name);
+                log("Artist: " + artist.name);
             });
-            console.log("Song name: " + song.name);
-            console.log("Preview Link: " + song.preview_url);
-            console.log("Album: " + song.album.name + '\n\n');
+            log("Song name: " + song.name);
+            log("Preview Link: " + song.preview_url);
+            log("Album: " + song.album.name + '\n\n');
             // console.log(song);
         } else {
             data.tracks.items.forEach(function (each) {
                 each.artists.forEach(function (artist) {
-                    console.log("Artist: " + artist.name);
+                    log("Artist: " + artist.name);
                 });
-                console.log("Song name: " + each.name);
-                console.log("Preview Link: " + each.preview_url);
-                console.log("Album: " + each.album.name + '\n\n');
+                log("Song name: " + each.name);
+                log("Preview Link: " + each.preview_url);
+                log("Album: " + each.album.name + '\n\n');
             });
         }
     });
@@ -86,17 +85,17 @@ var getMovie = function (title) {
     request(url, function (error, response, body) {
         if (!error && response.statusCode === 200) {
             var movie = JSON.parse(body);
-            console.log("\n\n");
-            console.log("The movie:");
-            console.log("Title: " + movie.Title);
-            console.log("Year: " + movie.Year);
-            console.log("IMDB Rating: " + movie.imdbRating);
-            console.log("Rotten Tomatoes Rating: " + movie.Ratings[1].Value);
-            console.log("Country: " + movie.Country);
-            console.log('Language: ', movie.Language);
-            console.log('Plot: ' + movie.Plot);
-            console.log('Actors: ' + movie.Actors);
-            console.log("\n\n");
+            log("\n\n");
+            log("The movie:");
+            log("Title: " + movie.Title);
+            log("Year: " + movie.Year);
+            log("IMDB Rating: " + movie.imdbRating);
+            log("Rotten Tomatoes Rating: " + movie.Ratings[1].Value);
+            log("Country: " + movie.Country);
+            log('Language: ', movie.Language);
+            log('Plot: ' + movie.Plot);
+            log('Actors: ' + movie.Actors);
+            log("\n\n");
         }
     });
 }
@@ -123,6 +122,15 @@ function runProgram(command) {
             });
             break;
     }
+}
+
+function log(data) {
+    console.log(data);
+    fs.appendFile("log.txt", data, function (err) {
+        if (err) {
+            return console.log(err);
+        }
+    });
 }
 
 runProgram(command);
